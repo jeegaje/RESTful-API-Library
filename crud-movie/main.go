@@ -12,10 +12,10 @@ func main() {
 	models.ConnectDatabase()
 
 	r.GET("/api/movies", moviecontroller.Index)
-	// r.GET("/api/products/:id", productcontroller.Show)
-	// r.POST("/api/product", productcontroller.Create)
-	// r.PUT("/api/product/:id", productcontroller.Update)
-	// r.DELETE("/api/product", productcontroller.Delete)
+	r.GET("/api/movies/:id", moviecontroller.Show)
+	r.POST("/api/movie", moviecontroller.Create)
+	r.PUT("/api/movie/:id", moviecontroller.Update)
+	r.DELETE("/api/movie", moviecontroller.Delete)
 
 	r.Run(":8181")
 }
