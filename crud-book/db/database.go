@@ -31,7 +31,7 @@ func InitDb() {
 
 	db.AutoMigrate(
 		&models.Book{},
-		&models.Category{},
+		&models.Genre{},
 		&models.Author{},
 	)
 }
