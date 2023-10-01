@@ -9,3 +9,7 @@ import (
 func HealthRoute(route *gin.Engine) {
 	route.GET("/health", controllers.CheckHealth)
 }
+
+func BookRoute(route *gin.Engine) {
+	route.GET("/books", controllers.GetAllBooks)
+}

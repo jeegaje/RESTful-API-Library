@@ -12,6 +12,7 @@ func main() {
 
 	r := gin.Default()
 	internal.HealthRoute(r)
+	internal.BookRoute(r)
 
 	r.Run()
 }
