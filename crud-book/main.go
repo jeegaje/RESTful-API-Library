@@ -10,9 +10,11 @@ import (
 func main() {
 	db.InitDb()
 
-	r := gin.Default()
-	internal.HealthRoute(r)
-	internal.BookRoute(r)
+	route := gin.Default()
+	internal.HealthRoute(route)
+	internal.BookRoute(route)
+	internal.AuthorRoute(route)
+	internal.GenreRoute(route)
 
-	r.Run()
+	route.Run()
 }

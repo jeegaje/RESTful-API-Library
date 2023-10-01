@@ -13,3 +13,11 @@ func HealthRoute(route *gin.Engine) {
 func BookRoute(route *gin.Engine) {
 	route.GET("/books", controllers.GetAllBooks)
 }
+
+func AuthorRoute(route *gin.Engine) {
+	route.GET("authors", controllers.GetAllAuthors)
+}
+
+func GenreRoute(route *gin.Engine) {
+	route.GET("/genres", controllers.GetAllGenres)
+}
