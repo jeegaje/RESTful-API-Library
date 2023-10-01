@@ -13,11 +13,14 @@ func GetAllBooks(c *gin.Context) {
 	var books []*models.Book
 	var responses []map[string]any
 
-	db.DB.Model(&models.Book{}).Find(&books)
+	db.DB.Preload("Author").Preload("Genre").Find(&books)
 
 	for _, book := range books {
 		response := map[string]any{
-			"title": book.Title,
+			"title":      book.Title,
+			"descripton": book.Description,
+			"author":     book.Author.FirstName,
+			"genre":      book.Genre.Name,
 		}
 		responses = append(responses, response)
 	}
