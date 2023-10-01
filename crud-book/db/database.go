@@ -11,6 +11,8 @@ import (
 	"crud-book/models"
 )
 
+var DB *gorm.DB
+
 func InitDb() {
 	err := godotenv.Load()
 
@@ -34,4 +36,6 @@ func InitDb() {
 		&models.Genre{},
 		&models.Author{},
 	)
+
+	DB = db
 }
