@@ -21,7 +21,8 @@ func GetAllGenres(c *gin.Context) {
 		responses = append(responses, response)
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": responses,
+		"code":    200,
+		"data":    responses,
+		"message": "Success get all genres",
 	})
 }

@@ -26,7 +26,8 @@ func GetAllAuthors(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": responses,
+		"code":    200,
+		"data":    responses,
+		"message": "Success get all authors",
 	})
 }
