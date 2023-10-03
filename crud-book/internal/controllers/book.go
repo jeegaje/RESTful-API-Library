@@ -48,3 +48,39 @@ func GetAllBooks(c *gin.Context) {
 		"messsage": "Success get all books",
 	})
 }
+
+func GetBookById(c *gin.Context) {
+	var book *models.Book
+
+	db.DB.Preload("Author").Preload("Genre").Where("id = ?", c.Param("id")).First(&book)
+
+	response := map[string]any{
+		"title":           book.Title,
+		"description":     book.Description,
+		"bookLanguage":    book.BookLanguage,
+		"publicationYear": book.PublicationYear,
+		"publisher":       book.Publisher,
+		"isbn":            book.Isbn,
+		"pageCount":       book.PageCount,
+		"price":           book.Price,
+		"availablity":     book.Availability,
+		"averageRating":   book.AverageRating,
+		"author": map[string]any{
+			"firstName":   book.Author.FirstName,
+			"lastName":    book.Author.LastName,
+			"birthDate":   book.Author.BirthDate,
+			"nationality": book.Author.Nationality,
+			"email":       book.Author.Email,
+		},
+		"genre": map[string]any{
+			"ID":   book.Genre.ID,
+			"Name": book.Genre.Name,
+		},
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"data":    response,
+		"message": "Success get book by id",
+	})
+}
