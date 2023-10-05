@@ -12,7 +12,7 @@ func HealthRoute(route *gin.Engine) {
 }
 
 func BookRoute(route *gin.Engine) {
-	route.GET("/books", controllers.GetAllBooks)
+	route.GET("/books", handlers.GetBookById)
 	route.GET("/books/:id", handlers.GetBookById)
 }
 

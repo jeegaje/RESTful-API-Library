@@ -12,8 +12,18 @@ import (
 var codeStatus int
 
 func GetBookById(c *gin.Context) {
+	var (
+		data any
+		err  error
+	)
 
-	data, err := controllers.GetBookById(c)
+	switch c.FullPath() {
+	case "/books/:id":
+		data, err = controllers.GetBookById(c)
+	case "/books":
+		data, err = controllers.GetAllBooks(c)
+	}
+
 	if err != nil {
 		switch err {
 		case gorm.ErrRecordNotFound:

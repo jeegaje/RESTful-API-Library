@@ -1,19 +1,20 @@
 package controllers
 
 import (
-	"net/http"
-
 	"crud-book/db"
 	"crud-book/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllBooks(c *gin.Context) {
+func GetAllBooks(c *gin.Context) ([]map[string]any, error) {
 	var books []*models.Book
 	var responses []map[string]any
 
-	db.DB.Preload("Author").Preload("Genre").Find(&books)
+	err := db.DB.Preload("Author").Preload("Genre").Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
 
 	for _, book := range books {
 		response := map[string]any{
@@ -42,11 +43,7 @@ func GetAllBooks(c *gin.Context) {
 		responses = append(responses, response)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":     200,
-		"data":     responses,
-		"messsage": "Success get all books",
-	})
+	return responses, nil
 }
 
 func GetBookById(c *gin.Context) (map[string]any, error) {
