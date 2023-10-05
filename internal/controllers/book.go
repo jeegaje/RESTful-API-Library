@@ -7,6 +7,7 @@ import (
 	"crud-book/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAllBooks(c *gin.Context) {
@@ -52,7 +53,23 @@ func GetAllBooks(c *gin.Context) {
 func GetBookById(c *gin.Context) {
 	var book *models.Book
 
-	db.DB.Preload("Author").Preload("Genre").Where("id = ?", c.Param("id")).First(&book)
+	err := db.DB.Preload("Author").Preload("Genre").Where("id = ?", c.Param("id")).First(&book).Error
+	if err != nil {
+		var code int
+
+		switch err {
+		case gorm.ErrRecordNotFound:
+			code = http.StatusNotFound
+		default:
+			code = http.StatusBadRequest
+		}
+
+		c.JSON(code, gin.H{
+			"code":    code,
+			"message": err.Error(),
+		})
+		return
+	}
 
 	response := map[string]any{
 		"title":           book.Title,

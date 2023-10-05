@@ -3,7 +3,6 @@ package controllers
 import (
 	"crud-book/db"
 	"crud-book/models"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -35,8 +34,16 @@ func GetAllAuthors(c *gin.Context) {
 
 func GetAuthorById(c *gin.Context) {
 	var author *models.Author
-	fmt.Println(c.Param("id"))
-	db.DB.Model(&author).Where("id = ?", c.Param("id")).First(&author)
+
+	err := db.DB.Model(&author).Where("id = ?", c.Param("id")).First(&author).Error
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code": 404,
+			"data": "Data Not Found",
+		})
+		return
+	}
+
 	response := map[string]any{
 		"firstName":   author.FirstName,
 		"lastName":    author.LastName,

@@ -30,7 +30,15 @@ func GetAllGenres(c *gin.Context) {
 func GetGenreById(c *gin.Context) {
 	var genre *models.Genre
 
-	db.DB.Model(&genre).Where("id = ?", c.Param("id")).First(&genre)
+	err := db.DB.Model(&genre).Where("id = ?", c.Param("id")).First(&genre).Error
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code":    404,
+			"message": "Data Not Found",
+		})
+		return
+	}
+
 	response := map[string]any{
 		"ID":   genre.ID,
 		"name": genre.Name,
