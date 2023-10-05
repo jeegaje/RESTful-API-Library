@@ -21,4 +21,5 @@ func AuthorRoute(route *gin.Engine) {
 
 func GenreRoute(route *gin.Engine) {
 	route.GET("/genres", controllers.GetAllGenres)
+	route.GET("/genres/:id", controllers.GetGenreById)
 }
