@@ -6,13 +6,29 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAllAuthors(c *gin.Context) {
 	var authors []*models.Author
 	var responses []map[string]any
+	var codeStatus int
 
-	db.DB.Find(&authors)
+	err := db.DB.Find(&authors).Error
+	if err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
+		})
+		return
+	}
 
 	for _, author := range authors {
 		response := map[string]any{
@@ -25,21 +41,30 @@ func GetAllAuthors(c *gin.Context) {
 		responses = append(responses, response)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Auhtor",
 		"data":    responses,
-		"message": "Success get all authors",
 	})
 }
 
 func GetAuthorById(c *gin.Context) {
 	var author *models.Author
+	var codeStatus int
 
 	err := db.DB.Model(&author).Where("id = ?", c.Param("id")).First(&author).Error
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"code": 404,
-			"data": "Data Not Found",
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
 		})
 		return
 	}
@@ -52,9 +77,10 @@ func GetAuthorById(c *gin.Context) {
 		"email":       author.Email,
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Author By ID",
 		"data":    response,
-		"message": "Get author by id success",
 	})
 }
