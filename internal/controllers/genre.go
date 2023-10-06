@@ -6,13 +6,29 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAllGenres(c *gin.Context) {
 	var genres []*models.Genre
 	var responses []map[string]any
+	var codeStatus int
 
-	db.DB.Find(&genres)
+	err := db.DB.Find(&genres).Error
+	if err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
+		})
+		return
+	}
 	for _, genre := range genres {
 		response := map[string]any{
 			"ID":   genre.ID,
@@ -20,21 +36,30 @@ func GetAllGenres(c *gin.Context) {
 		}
 		responses = append(responses, response)
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Genre",
 		"data":    responses,
-		"message": "Success get all genres",
 	})
 }
 
 func GetGenreById(c *gin.Context) {
 	var genre *models.Genre
+	var codeStatus int
 
 	err := db.DB.Model(&genre).Where("id = ?", c.Param("id")).First(&genre).Error
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"message": "Data Not Found",
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
 		})
 		return
 	}
@@ -44,9 +69,10 @@ func GetGenreById(c *gin.Context) {
 		"name": genre.Name,
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Genre By Id",
 		"data":    response,
-		"message": "Get route by id success",
 	})
 }
