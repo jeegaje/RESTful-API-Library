@@ -2,7 +2,6 @@ package internal
 
 import (
 	"crud-book/internal/controllers"
-	"crud-book/internal/handlers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +11,8 @@ func HealthRoute(route *gin.Engine) {
 }
 
 func BookRoute(route *gin.Engine) {
-	route.GET("/books", handlers.GetBookById)
-	route.GET("/books/:id", handlers.GetBookById)
+	route.GET("/books", controllers.GetAllBooks)
+	route.GET("/books/:id", controllers.GetBookById)
 }
 
 func AuthorRoute(route *gin.Engine) {

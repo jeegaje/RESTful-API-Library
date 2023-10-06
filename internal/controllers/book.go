@@ -4,16 +4,31 @@ import (
 	"crud-book/db"
 	"crud-book/models"
 
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func GetAllBooks(c *gin.Context) ([]map[string]any, error) {
+func GetAllBooks(c *gin.Context) {
 	var books []*models.Book
 	var responses []map[string]any
+	var codeStatus int
 
 	err := db.DB.Preload("Author").Preload("Genre").Find(&books).Error
 	if err != nil {
-		return nil, err
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
+		})
+		return
 	}
 
 	for _, book := range books {
@@ -43,15 +58,32 @@ func GetAllBooks(c *gin.Context) ([]map[string]any, error) {
 		responses = append(responses, response)
 	}
 
-	return responses, nil
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Book By ID",
+		"data":    responses,
+	})
 }
 
-func GetBookById(c *gin.Context) (map[string]any, error) {
+func GetBookById(c *gin.Context) {
 	var book *models.Book
+	var codeStatus int
 
 	err := db.DB.Preload("Author").Preload("Genre").Where("id = ?", c.Param("id")).First(&book).Error
 	if err != nil {
-		return nil, err
+		switch err {
+		case gorm.ErrRecordNotFound:
+			codeStatus = http.StatusNotFound
+		default:
+			codeStatus = http.StatusBadRequest
+		}
+
+		c.JSON(codeStatus, gin.H{
+			"code":    codeStatus,
+			"message": err.Error(),
+		})
+		return
 	}
 
 	response := map[string]any{
@@ -78,5 +110,10 @@ func GetBookById(c *gin.Context) (map[string]any, error) {
 		},
 	}
 
-	return response, nil
+	codeStatus = http.StatusOK
+	c.JSON(codeStatus, gin.H{
+		"code":    codeStatus,
+		"message": "Success Get Book By ID",
+		"data":    response,
+	})
 }
