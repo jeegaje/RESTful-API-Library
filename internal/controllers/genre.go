@@ -76,3 +76,33 @@ func GetGenreById(c *gin.Context) {
 		"data":    response,
 	})
 }
+
+type ReqBody struct {
+	Name string `json:"name"`
+}
+
+func CreateGenre(c *gin.Context) {
+	var reqestBody *ReqBody
+
+	err := c.ShouldBindJSON(&reqestBody)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	genre := models.Genre{
+		Name: reqestBody.Name,
+	}
+
+	err = db.DB.Create(&genre).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+}
