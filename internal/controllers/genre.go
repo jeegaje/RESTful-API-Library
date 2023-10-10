@@ -77,12 +77,8 @@ func GetGenreById(c *gin.Context) {
 	})
 }
 
-type ReqBody struct {
-	Name string `json:"name"`
-}
-
 func CreateGenre(c *gin.Context) {
-	var reqestBody *ReqBody
+	var reqestBody *models.Genre
 
 	err := c.ShouldBindJSON(&reqestBody)
 	if err != nil {

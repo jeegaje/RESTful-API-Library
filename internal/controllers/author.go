@@ -84,3 +84,43 @@ func GetAuthorById(c *gin.Context) {
 		"data":    response,
 	})
 }
+
+func CreateAuthor(c *gin.Context) {
+	var reqestBody *models.Author
+
+	err := c.ShouldBindJSON(&reqestBody)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	author := models.Author{
+		FirstName:   reqestBody.FirstName,
+		LastName:    reqestBody.LastName,
+		Email:       reqestBody.Email,
+		Nationality: reqestBody.Nationality,
+	}
+
+	err = db.DB.Create(&author).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Create Author Success",
+		"data": models.Author{
+			FirstName:   author.FirstName,
+			LastName:    author.LastName,
+			Email:       author.Email,
+			Nationality: author.Nationality,
+		},
+	})
+}

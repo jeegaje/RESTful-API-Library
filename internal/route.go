@@ -18,6 +18,7 @@ func BookRoute(route *gin.Engine) {
 func AuthorRoute(route *gin.Engine) {
 	route.GET("authors", controllers.GetAllAuthors)
 	route.GET("authors/:id", controllers.GetAuthorById)
+	route.POST("author", controllers.CreateAuthor)
 }
 
 func GenreRoute(route *gin.Engine) {
