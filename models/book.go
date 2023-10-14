@@ -34,9 +34,9 @@ type Genre struct {
 type Author struct {
 	//author table
 	ID          uint
-	FirstName   string    `json:"first_name"`
-	LastName    string    `json:"last_name"`
-	BirthDate   time.Time `json:"birth_date"`
+	FirstName   string    `json:"first_name" gorm:"not null"`
+	LastName    string    `json:"last_name" gorm:"not null"`
+	BirthDate   time.Time `json:"birth_date" gorm:"default:NULL"`
 	Nationality string    `json:"nationality"`
 	Email       string    `json:"email"`
 	CreatedAt   time.Time `json:"created_at"`
