@@ -101,4 +101,13 @@ func CreateGenre(c *gin.Context) {
 		})
 		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Create Genre Success",
+		"data": models.Genre{
+			Name: genre.Name,
+			ID:   genre.ID,
+		},
+	})
 }
