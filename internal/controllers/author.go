@@ -149,3 +149,47 @@ func DeleteAuthor(c *gin.Context) {
 		"message": "success delete Author",
 	})
 }
+
+func UpdateAuthor(c *gin.Context) {
+	var payload *models.Author
+
+	err := db.DB.First(&models.Author{}, c.Param("id")).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	updatedAuthor := models.Author{
+		FirstName:   payload.FirstName,
+		LastName:    payload.LastName,
+		Nationality: payload.Nationality,
+		Email:       payload.Email,
+		BirthDate:   payload.BirthDate,
+	}
+
+	err = db.DB.Model(&models.Author{}).Where("id = ?", c.Param("id")).Updates(updatedAuthor).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Update Auhtor Success",
+	})
+}

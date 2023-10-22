@@ -22,6 +22,7 @@ func AuthorRoute(route *gin.Engine) {
 	route.GET("authors/:id", controllers.GetAuthorById)
 	route.POST("author", controllers.CreateAuthor)
 	route.DELETE("/author/:id", controllers.DeleteAuthor)
+	route.PUT("author/:id", controllers.UpdateAuthor)
 }
 
 func GenreRoute(route *gin.Engine) {
