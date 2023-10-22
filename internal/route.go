@@ -29,4 +29,5 @@ func GenreRoute(route *gin.Engine) {
 	route.GET("/genres/:id", controllers.GetGenreById)
 	route.POST("/genre", controllers.CreateGenre)
 	route.DELETE("/genre/:id", controllers.DeleteGenre)
+	route.PUT("genre/:id", controllers.UpdateGenre)
 }

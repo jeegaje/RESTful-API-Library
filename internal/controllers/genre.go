@@ -137,3 +137,43 @@ func DeleteGenre(c *gin.Context) {
 		"message": "success delete genre",
 	})
 }
+
+func UpdateGenre(c *gin.Context) {
+	var payload *models.Genre
+
+	err := db.DB.First(&models.Genre{}, c.Param("id")).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	updatedGenre := models.Genre{
+		Name: payload.Name,
+	}
+
+	err = db.DB.Model(&models.Genre{}).Where("id = ?", c.Param("id")).Updates(updatedGenre).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Success Update Genre",
+	})
+}
