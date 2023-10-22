@@ -16,5 +16,5 @@ func main() {
 	internal.AuthorRoute(route)
 	internal.GenreRoute(route)
 
-	route.Run()
+	route.Run(":8081")
 }

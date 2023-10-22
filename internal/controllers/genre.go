@@ -111,3 +111,29 @@ func CreateGenre(c *gin.Context) {
 		},
 	})
 }
+
+func DeleteGenre(c *gin.Context) {
+
+	err := db.DB.First(&models.Genre{}, c.Param("id")).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = db.DB.Delete(&models.Genre{}, "id = ?", c.Param("id")).Error
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "success delete genre",
+	})
+}
