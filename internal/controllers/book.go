@@ -173,3 +173,28 @@ func CreateBook(c *gin.Context) {
 		},
 	})
 }
+
+func DeleteBook(c *gin.Context) {
+	err := db.DB.First(&models.Book{}, c.Param("id")).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = db.DB.Delete(&models.Book{}, "id = ?", c.Param("id")).Error
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "success delete Book",
+	})
+}
