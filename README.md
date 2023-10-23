@@ -1,6 +1,6 @@
 # Simple RESTful API Library
 
-Ini adalah proyek sederhana yang mengimplementasikan RESTful API untuk sebuah perpustakaan menggunakan GORM, Gin, dan MySQL. Proyek ini bertujuan untuk menunjukkan bagaimana Anda dapat membuat API sederhana dengan menggunakan teknologi-teknologi tersebut.
+Ini adalah proyek sederhana yang mengimplementasikan RESTful API untuk sebuah perpustakaan menggunakan GORM, Gin, dan PostgresSQL. Proyek ini bertujuan untuk menunjukkan bagaimana Anda dapat membuat API sederhana dengan menggunakan teknologi-teknologi tersebut.
 
 ## Persyaratan
 
@@ -9,7 +9,7 @@ Sebelum Anda dapat menjalankan proyek ini, pastikan Anda telah menginstal:
 - Go
 - GORM: `go get -u gorm.io/gorm`
 - Gin: `go get -u github.com/gin-gonic/gin`
-- MySQL: [https://dev.mysql.com/downloads/](https://dev.mysql.com/downloads/)
+- PostgresSQL
 
 ## API Endpoints
 
