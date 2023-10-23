@@ -121,6 +121,8 @@ func CreateAuthor(c *gin.Context) {
 			LastName:    author.LastName,
 			Email:       author.Email,
 			Nationality: author.Nationality,
+			CreatedAt:   author.CreatedAt,
+			UpdatedAt:   author.UpdatedAt,
 		},
 	})
 }

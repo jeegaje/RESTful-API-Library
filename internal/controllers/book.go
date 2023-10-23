@@ -61,7 +61,7 @@ func GetAllBooks(c *gin.Context) {
 	codeStatus = http.StatusOK
 	c.JSON(codeStatus, gin.H{
 		"code":    codeStatus,
-		"message": "Success Get Book By ID",
+		"message": "Success Get Books",
 		"data":    responses,
 	})
 }
@@ -170,6 +170,8 @@ func CreateBook(c *gin.Context) {
 			AverageRating:   book.AverageRating,
 			AuthorId:        book.AuthorId,
 			GenreId:         book.GenreId,
+			CreatedAt:       book.CreatedAt,
+			UpdatedAt:       book.UpdatedAt,
 		},
 	})
 }

@@ -106,8 +106,10 @@ func CreateGenre(c *gin.Context) {
 		"code":    http.StatusOK,
 		"message": "Create Genre Success",
 		"data": models.Genre{
-			Name: genre.Name,
-			ID:   genre.ID,
+			Name:      genre.Name,
+			ID:        genre.ID,
+			CreatedAt: genre.CreatedAt,
+			UpdatedAt: genre.UpdatedAt,
 		},
 	})
 }
