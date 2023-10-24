@@ -15,6 +15,7 @@ func BookRoute(route *gin.Engine) {
 	route.GET("/books/:id", controllers.GetBookById)
 	route.POST("book", controllers.CreateBook)
 	route.DELETE("book/:id", controllers.DeleteBook)
+	route.PUT("book/:id", controllers.UpdateBook)
 }
 
 func AuthorRoute(route *gin.Engine) {

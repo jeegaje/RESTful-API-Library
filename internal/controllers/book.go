@@ -200,3 +200,52 @@ func DeleteBook(c *gin.Context) {
 		"message": "success delete Book",
 	})
 }
+
+func UpdateBook(c *gin.Context) {
+	var payload *models.Book
+
+	err := db.DB.First(&models.Book{}, c.Param("id")).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	updatedBook := models.Book{
+		Title:           payload.Title,
+		Description:     payload.Description,
+		BookLanguage:    payload.BookLanguage,
+		PublicationYear: payload.PublicationYear,
+		Publisher:       payload.Publisher,
+		Isbn:            payload.Isbn,
+		PageCount:       payload.PageCount,
+		Price:           payload.Price,
+		Availability:    payload.Availability,
+		AverageRating:   payload.AverageRating,
+	}
+
+	err = db.DB.Model(&models.Book{}).Where("id = ?", c.Param("id")).Updates(updatedBook).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "Success Update Book",
+	})
+}
