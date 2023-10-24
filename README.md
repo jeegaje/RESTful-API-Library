@@ -23,17 +23,20 @@ Berikut adalah beberapa endpoint API yang tersedia:
 - `GET /books/{id}`: Mendapatkan detail buku berdasarkan ID.
 - `POST /book`: Menambahkan buku baru.
 - `DELETE /book/{id}`: Menghapus buku berdasarkan ID.
+- `PUT /book/{id}`: Mengupdate buku berdasarkan ID.
 
 ### Penulis (Author)
 - `GET /authors`: Mendapatkan daftar semua penulis.
 - `GET /authors/{id}`: Mendapatkan detail penulis berdasarkan ID.
 - `POST /author`: Menambahkan penulis baru.
 - `DELETE /author/{id}`: Menghapus penulis berdasarkan ID.
+- `PUT /author/{id}`: Mengupdate penulis berdasarkan ID.
 
 ### Genre
 - `GET /genres`: Mendapatkan daftar semua genre.
 - `GET /genres/{id}`: Mendapatkan detail genre berdasarkan ID.
 - `POST /genre`: Menambahkan genre baru.
 - `DELETE /genre/{id}`: Menghapus genre berdasarkan ID.
+- `PUT /genre/{id}`: Mengupdate genre berdasarkan ID.
 
 Pastikan untuk merujuk ke implementasi sesungguhnya di kode Anda dan menyesuaikan dengan deskripsi masing-masing endpoint.
